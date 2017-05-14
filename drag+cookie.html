@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<meta name="generator" content="HBuilder" />
+		<meta name="autor" content="唐宁" />
+		<meta name="keywords" content="唐宁,元素拖拽,JS,重庆师范大学" />
+		<title>拖拽元素</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div {
+				width: 100px;
+				height: 100px;
+				background-color: #ccc;
+				position: absolute;
+				cursor:pointer;
+			}
+			
+			div:hover {
+				-webkit-box-shadow: 0px 0px 1px #00f;
+				-moz-box-shadow: 0px 0px 1px #00f;
+				box-shadow: 0px 0px 1px #00f;
+			}
+		</style>
+		<script>
+			window.onload = function() {
+				var oDiv = document.getElementById("myDiv");
+				var oDiv2 = document.getElementById("myDiv2");
+
+				drag(oDiv); //需要设置绝对定位才能拖动
+				drag(oDiv2);
+
+				function drag(name) {
+					var iDate = 5; //cookie保存天数
+					var iDivX = getCookie(name.id + "l");
+					var iDivY = getCookie(name.id + "t");
+
+					name.onmousedown = moveTarget; //这个函数名后不能加()
+					name.onmousedown = moveTarget;
+
+					if(iDivX) { //如果存在disX的cookie
+						name.style.left = iDivX + 'px';
+						name.style.top = iDivY + 'px';
+					}
+
+					function getCookie(name) { //获取cookie
+						var arr = document.cookie.split("; "); //cookie数组分隔符为; (分号加空格)
+						var i;
+						for(i = 0; i < arr.length; i++) {
+							var arr2 = arr[i].split('=');
+
+							if(arr2[0] == name) {
+								return arr2[1];
+							}
+						}
+
+						return ''; //没有找到cookie返回空字符
+					}
+
+					function moveTarget(event) {
+						var target = event.target || event.srcElement; //获取拖拽目标
+						var x = event.clientX - target.offsetLeft; //x和y是鼠标与目标的距离
+						var y = event.clientY - target.offsetTop;
+
+						document.onmousemove = function(event) {
+							var l = event.clientX - x;
+							var t = event.clientY - y;
+							var r = document.documentElement.clientWidth - target.offsetWidth; //可视区的宽减去元素的宽
+							var b = document.documentElement.clientHeight - target.offsetHeight; //可视区的高减去元素的高
+
+							if(l < 0) { //左边距
+								l = 0;
+							} else if(l > r) { //右边距
+								l = r;
+							}
+							if(t < 0) { //上边距
+								t = 0;
+							} else if(t > b) { //下边距
+								t = b;
+							}
+
+							target.style.left = l + 'px';
+							target.style.top = t + 'px';
+						}
+
+						document.onmouseup = function() {
+							document.onmousemove = null;
+							document.onmouseup = null;
+
+							var oDate = new Date();
+							oDate.setDate(oDate.getDate() + iDate); //cookie有效天数
+
+							document.cookie = target.id + "l=" + target.offsetLeft + ';expires=' + oDate.toUTCString();
+							//将时间转换为UTC格式，以支持IE和Edge
+							document.cookie = target.id + "t=" + target.offsetTop + ';expires=' + oDate.toUTCString();
+						}
+
+						return false; //取消拖拽目标的默认行为(firfox下的bug)
+					}
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<div id="myDiv"></div>
+		<div id="myDiv2"></div>
+	</body>
+
+</html>
