@@ -15,7 +15,7 @@
 		<script>
 			window.onload=function() {
 				var json = document.getElementById("json");
-				var php = document.getElementById("php");
+				var phpHtml = document.getElementById("phpHtml");
 				var jsonText = new XMLHttpRequest();
 				var phpText = new XMLHttpRequest();
 				
@@ -41,7 +41,7 @@
 						for(x in str){
 							list+='<li>'+x+'->'+str[x]+'</li>';
 						}
-						php.innerHTML=list;
+						phpHtml.innerHTML=list;
 					}
 				}
 				
@@ -55,6 +55,6 @@
 	</head>
 	<body>
 		<table border="1" cellpadding="5" cellspacing="0" id="json"></table>
-		<ul id="php"></ul>
+		<ul id="phpHtml"></ul>
 	</body>
 </html>
