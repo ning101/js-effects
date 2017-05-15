@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>json+ajax</title>
+		<style>
+			#json {
+				border-collapse:collapse;  /*取消边框重叠*/
+			}
+			#php {
+				padding:0;
+				list-style-type:none;
+			}
+		</style>
+		<script>
+			window.onload=function() {
+				var json = document.getElementById("json");
+				var php = document.getElementById("php");
+				var jsonText = new XMLHttpRequest();
+				var phpText = new XMLHttpRequest();
+				
+				jsonText.onreadystatechange=function(){
+					if(jsonText.readyState==4 && jsonText.status==200){
+						var str = JSON.parse(jsonText.responseText);
+						var tal="";
+						for(x in str){
+							tal+='<tr>';
+							for(var i=0;i<str[x].length;i++){
+								tal+='<td>'+str[x][i]+'</td>';
+							}
+							tal+='</tr>';
+						}
+						json.innerHTML=tal;
+					}
+				}
+				
+				phpText.onreadystatechange=function(){
+					if(phpText.readyState==4 && phpText.status==200){
+						var str = JSON.parse(phpText.responseText);
+						for(x in str){
+							php.innerHTML+='<li>'+x+'->'+str[x]+'</li>';
+						}
+					}
+				}
+				
+				jsonText.open('GET','json.json',true);
+				jsonText.send(null);
+				
+				phpText.open('GET','json.php',true);
+				phpText.send(null);
+			}
+		</script>
+	</head>
+	<body>
+		<table border="1" cellpadding="5" cellspacing="0" id="json"></table>
+		<ul id="php"></ul>
+	</body>
+</html>
