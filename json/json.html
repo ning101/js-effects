@@ -37,9 +37,11 @@
 				phpText.onreadystatechange=function(){
 					if(phpText.readyState==4 && phpText.status==200){
 						var str = JSON.parse(phpText.responseText);
+						var list = "";
 						for(x in str){
-							php.innerHTML+='<li>'+x+'->'+str[x]+'</li>';
+							list+='<li>'+x+'->'+str[x]+'</li>';
 						}
+						php.innerHTML=list;
 					}
 				}
 				
