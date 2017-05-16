@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script>
+			function callbackFunction(result){
+				var html="<ul>";
+				
+				for(var i=0;i<result.length;i++){
+					html+="<li>"+result[i]+"</li>";
+				}
+				
+				html+="</ul>";
+				
+//				window.onload=function(){DOM加载完以后再获取div元素
+					var oDiv = document.getElementById("myDiv");
+					oDiv.innerHTML=html;
+//				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="myDiv"></div>
+		<script src="callback.php?callback=callbackFunction"></script>
+		<!--DOM加载完后调用函数才能获取到div-->
+	</body>
+</html>
